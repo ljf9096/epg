@@ -8,6 +8,7 @@ import re
 import gzip
 import io
 import os
+import datetime   # 新增
 
 # ---------- 配置 ----------
 EPG_SOURCES = [
@@ -126,11 +127,12 @@ def main():
     print(f"📺 原始频道数: {len(root.findall('channel'))}")
     add_aliases(root)
 
-    # 写入文件（强制覆盖）
+    # 🔥 新增：添加生成时间戳，确保每次内容不同
+    root.set('generated', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
     try:
         tree = ET.ElementTree(root)
         tree.write(output_file, encoding='utf-8', xml_declaration=True)
-        # 检查文件是否真的存在
         if os.path.exists(output_file):
             size = os.path.getsize(output_file)
             print(f"✅ 已生成: {output_file} (大小: {size} 字节)")
