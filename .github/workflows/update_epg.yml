@@ -10,13 +10,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write   # 允许推送代码
 
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0   # 完整克隆，便于提交
 
       - name: 设置 Python
         uses: actions/setup-python@v5
@@ -28,6 +28,10 @@ jobs:
 
       - name: 运行脚本生成 epg.xml
         run: python generate_epg.py epg.xml
+
+      # 新增：列出当前目录文件，确认 epg.xml 已生成
+      - name: 列出当前目录文件
+        run: ls -la
 
       - name: 提交并推送
         run: |
