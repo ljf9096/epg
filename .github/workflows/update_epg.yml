@@ -10,13 +10,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # 允许推送代码
+      contents: write
 
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # 完整克隆，便于提交
+          fetch-depth: 0
 
       - name: 设置 Python
         uses: actions/setup-python@v5
@@ -32,13 +32,10 @@ jobs:
       - name: 列出当前目录文件（调试）
         run: ls -la
 
-      - name: 强制提交并推送（即使无变化也生成新 commit）
+      - name: 提交并推送
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config.user.email "github-actions[bot]@users.noreply.github.com"
           git add epg.xml
-          # 尝试提交（如果有变化）
-          git commit -m "自动更新EPG $(date '+%Y-%m-%d %H:%M:%S')" || \
-          # 如果无变化，则创建空提交（带时间戳）
-          git commit --allow-empty -m "自动更新EPG $(date '+%Y-%m-%d %H:%M:%S') (无变化)"
+          git commit -m "自动更新EPG $(date '+%Y-%m-%d %H:%M:%S')"
           git push
