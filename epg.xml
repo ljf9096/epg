@@ -5234,7 +5234,7 @@
 	</programme>
 	<channel id="CCTV1">
 		<display-name lang="zh">CCTV1</display-name>
-	<display-name lang="zh">CCTV-1</display-name><display-name lang="zh">CCTV1综合</display-name><display-name lang="zh">CCTV-1综合</display-name><display-name lang="zh">CCTV1高清</display-name><display-name lang="zh">CCTV-1高清</display-name><display-name lang="zh">CCTV1HD</display-name><display-name lang="zh">CCTV-1HD</display-name></channel>
+	<display-name lang="zh">CCTV-1</display-name><display-name lang="zh">CCTV1综合</display-name><display-name lang="zh">CCTV-1综合</display-name><display-name lang="zh">CCTV1 综合</display-name><display-name lang="zh">CCTV-1 综合</display-name><display-name lang="zh">CCTV1高清</display-name><display-name lang="zh">CCTV-1高清</display-name><display-name lang="zh">CCTV1 高清</display-name><display-name lang="zh">CCTV-1 高清</display-name><display-name lang="zh">CCTV1HD</display-name><display-name lang="zh">CCTV-1HD</display-name><display-name lang="zh">CCTV1 HD</display-name><display-name lang="zh">CCTV-1 HD</display-name></channel>
 	<programme channel="CCTV1" start="20260830011100 +0800" stop="20260830015500 +0800">
 		<title lang="zh">生活早参考-特别节目(生活圈)2026-236</title>
 	</programme>
@@ -6088,7 +6088,7 @@
 	</programme>
 	<channel id="CCTV10">
 		<display-name lang="zh">CCTV10</display-name>
-	<display-name lang="zh">CCTV-10</display-name><display-name lang="zh">CCTV10综合</display-name><display-name lang="zh">CCTV-10综合</display-name><display-name lang="zh">CCTV10高清</display-name><display-name lang="zh">CCTV-10高清</display-name><display-name lang="zh">CCTV10HD</display-name><display-name lang="zh">CCTV-10HD</display-name></channel>
+	<display-name lang="zh">CCTV-10</display-name><display-name lang="zh">CCTV10综合</display-name><display-name lang="zh">CCTV-10综合</display-name><display-name lang="zh">CCTV10 综合</display-name><display-name lang="zh">CCTV-10 综合</display-name><display-name lang="zh">CCTV10高清</display-name><display-name lang="zh">CCTV-10高清</display-name><display-name lang="zh">CCTV10 高清</display-name><display-name lang="zh">CCTV-10 高清</display-name><display-name lang="zh">CCTV10HD</display-name><display-name lang="zh">CCTV-10HD</display-name><display-name lang="zh">CCTV10 HD</display-name><display-name lang="zh">CCTV-10 HD</display-name></channel>
 	<programme channel="CCTV10" start="20260830002500 +0800" stop="20260830005500 +0800">
 		<title lang="zh">味道-2026-73</title>
 	</programme>
@@ -6942,7 +6942,7 @@
 	</programme>
 	<channel id="CCTV11">
 		<display-name lang="zh">CCTV11</display-name>
-	<display-name lang="zh">CCTV-11</display-name><display-name lang="zh">CCTV11综合</display-name><display-name lang="zh">CCTV-11综合</display-name><display-name lang="zh">CCTV11高清</display-name><display-name lang="zh">CCTV-11高清</display-name><display-name lang="zh">CCTV11HD</display-name><display-name lang="zh">CCTV-11HD</display-name></channel>
+	<display-name lang="zh">CCTV-11</display-name><display-name lang="zh">CCTV11综合</display-name><display-name lang="zh">CCTV-11综合</display-name><display-name lang="zh">CCTV11 综合</display-name><display-name lang="zh">CCTV-11 综合</display-name><display-name lang="zh">CCTV11高清</display-name><display-name lang="zh">CCTV-11高清</display-name><display-name lang="zh">CCTV11 高清</display-name><display-name lang="zh">CCTV-11 高清</display-name><display-name lang="zh">CCTV11HD</display-name><display-name lang="zh">CCTV-11HD</display-name><display-name lang="zh">CCTV11 HD</display-name><display-name lang="zh">CCTV-11 HD</display-name></channel>
 	<programme channel="CCTV11" start="20260830002500 +0800" stop="20260830005600 +0800">
 		<title lang="zh">青春戏苑-2026-287越剧《梁山伯与祝英台》专辑3</title>
 	</programme>
@@ -7407,7 +7407,7 @@
 	</programme>
 	<channel id="CCTV12">
 		<display-name lang="zh">CCTV12</display-name>
-	<display-name lang="zh">CCTV-12</display-name><display-name lang="zh">CCTV12综合</display-name><display-name lang="zh">CCTV-12综合</display-name><display-name lang="zh">CCTV12高清</display-name><display-name lang="zh">CCTV-12高清</display-name><display-name lang="zh">CCTV12HD</display-name><display-name lang="zh">CCTV-12HD</display-name></channel>
+	<display-name lang="zh">CCTV-12</display-name><display-name lang="zh">CCTV12综合</display-name><display-name lang="zh">CCTV-12综合</display-name><display-name lang="zh">CCTV12 综合</display-name><display-name lang="zh">CCTV-12 综合</display-name><display-name lang="zh">CCTV12高清</display-name><display-name lang="zh">CCTV-12高清</display-name><display-name lang="zh">CCTV12 高清</display-name><display-name lang="zh">CCTV-12 高清</display-name><display-name lang="zh">CCTV12HD</display-name><display-name lang="zh">CCTV-12HD</display-name><display-name lang="zh">CCTV12 HD</display-name><display-name lang="zh">CCTV-12 HD</display-name></channel>
 	<programme channel="CCTV12" start="20260830004700 +0800" stop="20260830011800 +0800">
 		<title lang="zh">现在开庭-2026-53</title>
 	</programme>
@@ -8175,7 +8175,7 @@
 	</programme>
 	<channel id="CCTV13">
 		<display-name lang="zh">CCTV13</display-name>
-	<display-name lang="zh">CCTV-13</display-name><display-name lang="zh">CCTV13综合</display-name><display-name lang="zh">CCTV-13综合</display-name><display-name lang="zh">CCTV13高清</display-name><display-name lang="zh">CCTV-13高清</display-name><display-name lang="zh">CCTV13HD</display-name><display-name lang="zh">CCTV-13HD</display-name></channel>
+	<display-name lang="zh">CCTV-13</display-name><display-name lang="zh">CCTV13综合</display-name><display-name lang="zh">CCTV-13综合</display-name><display-name lang="zh">CCTV13 综合</display-name><display-name lang="zh">CCTV-13 综合</display-name><display-name lang="zh">CCTV13高清</display-name><display-name lang="zh">CCTV-13高清</display-name><display-name lang="zh">CCTV13 高清</display-name><display-name lang="zh">CCTV-13 高清</display-name><display-name lang="zh">CCTV13HD</display-name><display-name lang="zh">CCTV-13HD</display-name><display-name lang="zh">CCTV13 HD</display-name><display-name lang="zh">CCTV-13 HD</display-name></channel>
 	<programme channel="CCTV13" start="20260830000000 +0800" stop="20260830001500 +0800">
 		<title lang="zh">午夜新闻</title>
 	</programme>
@@ -9214,7 +9214,7 @@
 	</programme>
 	<channel id="CCTV14">
 		<display-name lang="zh">CCTV14</display-name>
-	<display-name lang="zh">CCTV-14</display-name><display-name lang="zh">CCTV14综合</display-name><display-name lang="zh">CCTV-14综合</display-name><display-name lang="zh">CCTV14高清</display-name><display-name lang="zh">CCTV-14高清</display-name><display-name lang="zh">CCTV14HD</display-name><display-name lang="zh">CCTV-14HD</display-name></channel>
+	<display-name lang="zh">CCTV-14</display-name><display-name lang="zh">CCTV14综合</display-name><display-name lang="zh">CCTV-14综合</display-name><display-name lang="zh">CCTV14 综合</display-name><display-name lang="zh">CCTV-14 综合</display-name><display-name lang="zh">CCTV14高清</display-name><display-name lang="zh">CCTV-14高清</display-name><display-name lang="zh">CCTV14 高清</display-name><display-name lang="zh">CCTV-14 高清</display-name><display-name lang="zh">CCTV14HD</display-name><display-name lang="zh">CCTV-14HD</display-name><display-name lang="zh">CCTV14 HD</display-name><display-name lang="zh">CCTV-14 HD</display-name></channel>
 	<programme channel="CCTV14" start="20260830011000 +0800" stop="20260830055500 +0800">
 		<title lang="zh">再见</title>
 	</programme>
@@ -9655,7 +9655,7 @@
 	</programme>
 	<channel id="CCTV15">
 		<display-name lang="zh">CCTV15</display-name>
-	<display-name lang="zh">CCTV-15</display-name><display-name lang="zh">CCTV15综合</display-name><display-name lang="zh">CCTV-15综合</display-name><display-name lang="zh">CCTV15高清</display-name><display-name lang="zh">CCTV-15高清</display-name><display-name lang="zh">CCTV15HD</display-name><display-name lang="zh">CCTV-15HD</display-name></channel>
+	<display-name lang="zh">CCTV-15</display-name><display-name lang="zh">CCTV15综合</display-name><display-name lang="zh">CCTV-15综合</display-name><display-name lang="zh">CCTV15 综合</display-name><display-name lang="zh">CCTV-15 综合</display-name><display-name lang="zh">CCTV15高清</display-name><display-name lang="zh">CCTV-15高清</display-name><display-name lang="zh">CCTV15 高清</display-name><display-name lang="zh">CCTV-15 高清</display-name><display-name lang="zh">CCTV15HD</display-name><display-name lang="zh">CCTV-15HD</display-name><display-name lang="zh">CCTV15 HD</display-name><display-name lang="zh">CCTV-15 HD</display-name></channel>
 	<programme channel="CCTV15" start="20260830004500 +0800" stop="20260830012000 +0800">
 		<title lang="zh">风华国乐-2026-246</title>
 	</programme>
@@ -10101,7 +10101,7 @@
 	</programme>
 	<channel id="CCTV16">
 		<display-name lang="zh">CCTV16</display-name>
-	<display-name lang="zh">CCTV-16</display-name><display-name lang="zh">CCTV16综合</display-name><display-name lang="zh">CCTV-16综合</display-name><display-name lang="zh">CCTV16高清</display-name><display-name lang="zh">CCTV-16高清</display-name><display-name lang="zh">CCTV16HD</display-name><display-name lang="zh">CCTV-16HD</display-name></channel>
+	<display-name lang="zh">CCTV-16</display-name><display-name lang="zh">CCTV16综合</display-name><display-name lang="zh">CCTV-16综合</display-name><display-name lang="zh">CCTV16 综合</display-name><display-name lang="zh">CCTV-16 综合</display-name><display-name lang="zh">CCTV16高清</display-name><display-name lang="zh">CCTV-16高清</display-name><display-name lang="zh">CCTV16 高清</display-name><display-name lang="zh">CCTV-16 高清</display-name><display-name lang="zh">CCTV16HD</display-name><display-name lang="zh">CCTV-16HD</display-name><display-name lang="zh">CCTV16 HD</display-name><display-name lang="zh">CCTV-16 HD</display-name></channel>
 	<programme channel="CCTV16" start="20260830000500 +0800" stop="20260830010500 +0800">
 		<title lang="zh">实况录像(奥林匹克)-2026年世界击剑锦标赛3</title>
 	</programme>
@@ -10679,7 +10679,7 @@
 	</programme>
 	<channel id="CCTV17">
 		<display-name lang="zh">CCTV17</display-name>
-	<display-name lang="zh">CCTV-17</display-name><display-name lang="zh">CCTV17综合</display-name><display-name lang="zh">CCTV-17综合</display-name><display-name lang="zh">CCTV17高清</display-name><display-name lang="zh">CCTV-17高清</display-name><display-name lang="zh">CCTV17HD</display-name><display-name lang="zh">CCTV-17HD</display-name></channel>
+	<display-name lang="zh">CCTV-17</display-name><display-name lang="zh">CCTV17综合</display-name><display-name lang="zh">CCTV-17综合</display-name><display-name lang="zh">CCTV17 综合</display-name><display-name lang="zh">CCTV-17 综合</display-name><display-name lang="zh">CCTV17高清</display-name><display-name lang="zh">CCTV-17高清</display-name><display-name lang="zh">CCTV17 高清</display-name><display-name lang="zh">CCTV-17 高清</display-name><display-name lang="zh">CCTV17HD</display-name><display-name lang="zh">CCTV-17HD</display-name><display-name lang="zh">CCTV17 HD</display-name><display-name lang="zh">CCTV-17 HD</display-name></channel>
 	<programme channel="CCTV17" start="20260830001400 +0800" stop="20260830004500 +0800">
 		<title lang="zh">三农群英汇-2026-282</title>
 	</programme>
@@ -11347,7 +11347,7 @@
 	</programme>
 	<channel id="CCTV2">
 		<display-name lang="zh">CCTV2</display-name>
-	<display-name lang="zh">CCTV-2</display-name><display-name lang="zh">CCTV2综合</display-name><display-name lang="zh">CCTV-2综合</display-name><display-name lang="zh">CCTV2高清</display-name><display-name lang="zh">CCTV-2高清</display-name><display-name lang="zh">CCTV2HD</display-name><display-name lang="zh">CCTV-2HD</display-name></channel>
+	<display-name lang="zh">CCTV-2</display-name><display-name lang="zh">CCTV2综合</display-name><display-name lang="zh">CCTV-2综合</display-name><display-name lang="zh">CCTV2 综合</display-name><display-name lang="zh">CCTV-2 综合</display-name><display-name lang="zh">CCTV2高清</display-name><display-name lang="zh">CCTV-2高清</display-name><display-name lang="zh">CCTV2 高清</display-name><display-name lang="zh">CCTV-2 高清</display-name><display-name lang="zh">CCTV2HD</display-name><display-name lang="zh">CCTV-2HD</display-name><display-name lang="zh">CCTV2 HD</display-name><display-name lang="zh">CCTV-2 HD</display-name></channel>
 	<programme channel="CCTV2" start="20260830003900 +0800" stop="20260830013700 +0800">
 		<title lang="zh">职场健康课-2026-34</title>
 	</programme>
@@ -12307,7 +12307,7 @@
 	</programme>
 	<channel id="CCTV3">
 		<display-name lang="zh">CCTV3</display-name>
-	<display-name lang="zh">CCTV-3</display-name><display-name lang="zh">CCTV3综合</display-name><display-name lang="zh">CCTV-3综合</display-name><display-name lang="zh">CCTV3高清</display-name><display-name lang="zh">CCTV-3高清</display-name><display-name lang="zh">CCTV3HD</display-name><display-name lang="zh">CCTV-3HD</display-name></channel>
+	<display-name lang="zh">CCTV-3</display-name><display-name lang="zh">CCTV3综合</display-name><display-name lang="zh">CCTV-3综合</display-name><display-name lang="zh">CCTV3 综合</display-name><display-name lang="zh">CCTV-3 综合</display-name><display-name lang="zh">CCTV3高清</display-name><display-name lang="zh">CCTV-3高清</display-name><display-name lang="zh">CCTV3 高清</display-name><display-name lang="zh">CCTV-3 高清</display-name><display-name lang="zh">CCTV3HD</display-name><display-name lang="zh">CCTV-3HD</display-name><display-name lang="zh">CCTV3 HD</display-name><display-name lang="zh">CCTV-3 HD</display-name></channel>
 	<programme channel="CCTV3" start="20260830004400 +0800" stop="20260830013000 +0800">
 		<title lang="zh">综艺喜乐汇</title>
 	</programme>
@@ -12921,7 +12921,7 @@
 	</programme>
 	<channel id="CCTV4">
 		<display-name lang="zh">CCTV4</display-name>
-	<display-name lang="zh">CCTV-4</display-name><display-name lang="zh">CCTV4综合</display-name><display-name lang="zh">CCTV-4综合</display-name><display-name lang="zh">CCTV4高清</display-name><display-name lang="zh">CCTV-4高清</display-name><display-name lang="zh">CCTV4HD</display-name><display-name lang="zh">CCTV-4HD</display-name></channel>
+	<display-name lang="zh">CCTV-4</display-name><display-name lang="zh">CCTV4综合</display-name><display-name lang="zh">CCTV-4综合</display-name><display-name lang="zh">CCTV4 综合</display-name><display-name lang="zh">CCTV-4 综合</display-name><display-name lang="zh">CCTV4高清</display-name><display-name lang="zh">CCTV-4高清</display-name><display-name lang="zh">CCTV4 高清</display-name><display-name lang="zh">CCTV-4 高清</display-name><display-name lang="zh">CCTV4HD</display-name><display-name lang="zh">CCTV-4HD</display-name><display-name lang="zh">CCTV4 HD</display-name><display-name lang="zh">CCTV-4 HD</display-name></channel>
 	<programme channel="CCTV4" start="20260830004200 +0800" stop="20260830012900 +0800">
 		<title lang="zh">依依向北风第18集</title>
 	</programme>
@@ -14076,7 +14076,7 @@
 	</programme>
 	<channel id="CCTV4K">
 		<display-name lang="zh">CCTV4K</display-name>
-	<display-name lang="zh">CCTV4</display-name><display-name lang="zh">CCTV-4</display-name><display-name lang="zh">CCTV4综合</display-name><display-name lang="zh">CCTV-4综合</display-name><display-name lang="zh">CCTV4高清</display-name><display-name lang="zh">CCTV-4高清</display-name><display-name lang="zh">CCTV4HD</display-name><display-name lang="zh">CCTV-4HD</display-name></channel>
+	<display-name lang="zh">CCTV4</display-name><display-name lang="zh">CCTV-4</display-name><display-name lang="zh">CCTV4综合</display-name><display-name lang="zh">CCTV-4综合</display-name><display-name lang="zh">CCTV4 综合</display-name><display-name lang="zh">CCTV-4 综合</display-name><display-name lang="zh">CCTV4高清</display-name><display-name lang="zh">CCTV-4高清</display-name><display-name lang="zh">CCTV4 高清</display-name><display-name lang="zh">CCTV-4 高清</display-name><display-name lang="zh">CCTV4HD</display-name><display-name lang="zh">CCTV-4HD</display-name><display-name lang="zh">CCTV4 HD</display-name><display-name lang="zh">CCTV-4 HD</display-name></channel>
 	<programme channel="CCTV4K" start="20260830000000 +0800" stop="20260830060000 +0800">
 		<title lang="zh">再见</title>
 	</programme>
@@ -14997,7 +14997,7 @@
 	</programme>
 	<channel id="CCTV5">
 		<display-name lang="zh">CCTV5</display-name>
-	<display-name lang="zh">CCTV-5</display-name><display-name lang="zh">CCTV5综合</display-name><display-name lang="zh">CCTV-5综合</display-name><display-name lang="zh">CCTV5高清</display-name><display-name lang="zh">CCTV-5高清</display-name><display-name lang="zh">CCTV5HD</display-name><display-name lang="zh">CCTV-5HD</display-name></channel>
+	<display-name lang="zh">CCTV-5</display-name><display-name lang="zh">CCTV5综合</display-name><display-name lang="zh">CCTV-5综合</display-name><display-name lang="zh">CCTV5 综合</display-name><display-name lang="zh">CCTV-5 综合</display-name><display-name lang="zh">CCTV5高清</display-name><display-name lang="zh">CCTV-5高清</display-name><display-name lang="zh">CCTV5 高清</display-name><display-name lang="zh">CCTV-5 高清</display-name><display-name lang="zh">CCTV5HD</display-name><display-name lang="zh">CCTV-5HD</display-name><display-name lang="zh">CCTV5 HD</display-name><display-name lang="zh">CCTV-5 HD</display-name></channel>
 	<programme channel="CCTV5" start="20260830000500 +0800" stop="20260830010600 +0800">
 		<title lang="zh">2026年国际体联蹦床世界杯-阿罗萨站(4K)</title>
 	</programme>
@@ -15510,13 +15510,13 @@
 	</programme>
 	<channel id="CCTV5+">
 		<display-name lang="zh">CCTV5+</display-name>
-	<display-name lang="zh">CCTV5</display-name><display-name lang="zh">CCTV-5</display-name><display-name lang="zh">CCTV5综合</display-name><display-name lang="zh">CCTV-5综合</display-name><display-name lang="zh">CCTV5高清</display-name><display-name lang="zh">CCTV-5高清</display-name><display-name lang="zh">CCTV5HD</display-name><display-name lang="zh">CCTV-5HD</display-name></channel>
+	<display-name lang="zh">CCTV5</display-name><display-name lang="zh">CCTV-5</display-name><display-name lang="zh">CCTV5综合</display-name><display-name lang="zh">CCTV-5综合</display-name><display-name lang="zh">CCTV5 综合</display-name><display-name lang="zh">CCTV-5 综合</display-name><display-name lang="zh">CCTV5高清</display-name><display-name lang="zh">CCTV-5高清</display-name><display-name lang="zh">CCTV5 高清</display-name><display-name lang="zh">CCTV-5 高清</display-name><display-name lang="zh">CCTV5HD</display-name><display-name lang="zh">CCTV-5HD</display-name><display-name lang="zh">CCTV5 HD</display-name><display-name lang="zh">CCTV-5 HD</display-name></channel>
 	<channel id="CCTV5+">
 		<display-name lang="zh">CCTV5plus</display-name>
-	<display-name lang="zh">CCTV5</display-name><display-name lang="zh">CCTV-5</display-name><display-name lang="zh">CCTV5综合</display-name><display-name lang="zh">CCTV-5综合</display-name><display-name lang="zh">CCTV5高清</display-name><display-name lang="zh">CCTV-5高清</display-name><display-name lang="zh">CCTV5HD</display-name><display-name lang="zh">CCTV-5HD</display-name></channel>
+	<display-name lang="zh">CCTV5</display-name><display-name lang="zh">CCTV-5</display-name><display-name lang="zh">CCTV5综合</display-name><display-name lang="zh">CCTV-5综合</display-name><display-name lang="zh">CCTV5 综合</display-name><display-name lang="zh">CCTV-5 综合</display-name><display-name lang="zh">CCTV5高清</display-name><display-name lang="zh">CCTV-5高清</display-name><display-name lang="zh">CCTV5 高清</display-name><display-name lang="zh">CCTV-5 高清</display-name><display-name lang="zh">CCTV5HD</display-name><display-name lang="zh">CCTV-5HD</display-name><display-name lang="zh">CCTV5 HD</display-name><display-name lang="zh">CCTV-5 HD</display-name></channel>
 	<channel id="CCTV5+">
 		<display-name lang="zh">CCTV5PLUS</display-name>
-	<display-name lang="zh">CCTV5</display-name><display-name lang="zh">CCTV-5</display-name><display-name lang="zh">CCTV5综合</display-name><display-name lang="zh">CCTV-5综合</display-name><display-name lang="zh">CCTV5高清</display-name><display-name lang="zh">CCTV-5高清</display-name><display-name lang="zh">CCTV5HD</display-name><display-name lang="zh">CCTV-5HD</display-name></channel>
+	<display-name lang="zh">CCTV5</display-name><display-name lang="zh">CCTV-5</display-name><display-name lang="zh">CCTV5综合</display-name><display-name lang="zh">CCTV-5综合</display-name><display-name lang="zh">CCTV5 综合</display-name><display-name lang="zh">CCTV-5 综合</display-name><display-name lang="zh">CCTV5高清</display-name><display-name lang="zh">CCTV-5高清</display-name><display-name lang="zh">CCTV5 高清</display-name><display-name lang="zh">CCTV-5 高清</display-name><display-name lang="zh">CCTV5HD</display-name><display-name lang="zh">CCTV-5HD</display-name><display-name lang="zh">CCTV5 HD</display-name><display-name lang="zh">CCTV-5 HD</display-name></channel>
 	<programme channel="CCTV5+" start="20260830012100 +0800" stop="20260830024800 +0800">
 		<title lang="zh">实况录像-2025/2026赛季中国男子篮球职业联赛&amp;ensp;半决赛&amp;ensp;5</title>
 	</programme>
@@ -15922,7 +15922,7 @@
 	</programme>
 	<channel id="CCTV6">
 		<display-name lang="zh">CCTV6</display-name>
-	<display-name lang="zh">CCTV-6</display-name><display-name lang="zh">CCTV6综合</display-name><display-name lang="zh">CCTV-6综合</display-name><display-name lang="zh">CCTV6高清</display-name><display-name lang="zh">CCTV-6高清</display-name><display-name lang="zh">CCTV6HD</display-name><display-name lang="zh">CCTV-6HD</display-name></channel>
+	<display-name lang="zh">CCTV-6</display-name><display-name lang="zh">CCTV6综合</display-name><display-name lang="zh">CCTV-6综合</display-name><display-name lang="zh">CCTV6 综合</display-name><display-name lang="zh">CCTV-6 综合</display-name><display-name lang="zh">CCTV6高清</display-name><display-name lang="zh">CCTV-6高清</display-name><display-name lang="zh">CCTV6 高清</display-name><display-name lang="zh">CCTV-6 高清</display-name><display-name lang="zh">CCTV6HD</display-name><display-name lang="zh">CCTV-6HD</display-name><display-name lang="zh">CCTV6 HD</display-name><display-name lang="zh">CCTV-6 HD</display-name></channel>
 	<programme channel="CCTV6" start="20260830002700 +0800" stop="20260830003200 +0800">
 		<title lang="zh">光影星播客</title>
 	</programme>
@@ -16728,7 +16728,7 @@
 	</programme>
 	<channel id="CCTV7">
 		<display-name lang="zh">CCTV7</display-name>
-	<display-name lang="zh">CCTV-7</display-name><display-name lang="zh">CCTV7综合</display-name><display-name lang="zh">CCTV-7综合</display-name><display-name lang="zh">CCTV7高清</display-name><display-name lang="zh">CCTV-7高清</display-name><display-name lang="zh">CCTV7HD</display-name><display-name lang="zh">CCTV-7HD</display-name></channel>
+	<display-name lang="zh">CCTV-7</display-name><display-name lang="zh">CCTV7综合</display-name><display-name lang="zh">CCTV-7综合</display-name><display-name lang="zh">CCTV7 综合</display-name><display-name lang="zh">CCTV-7 综合</display-name><display-name lang="zh">CCTV7高清</display-name><display-name lang="zh">CCTV-7高清</display-name><display-name lang="zh">CCTV7 高清</display-name><display-name lang="zh">CCTV-7 高清</display-name><display-name lang="zh">CCTV7HD</display-name><display-name lang="zh">CCTV-7HD</display-name><display-name lang="zh">CCTV7 HD</display-name><display-name lang="zh">CCTV-7 HD</display-name></channel>
 	<programme channel="CCTV7" start="20260830002300 +0800" stop="20260830060300 +0800">
 		<title lang="zh">再见</title>
 	</programme>
@@ -17548,7 +17548,7 @@
 	</programme>
 	<channel id="CCTV8">
 		<display-name lang="zh">CCTV8</display-name>
-	<display-name lang="zh">CCTV-8</display-name><display-name lang="zh">CCTV8综合</display-name><display-name lang="zh">CCTV-8综合</display-name><display-name lang="zh">CCTV8高清</display-name><display-name lang="zh">CCTV-8高清</display-name><display-name lang="zh">CCTV8HD</display-name><display-name lang="zh">CCTV-8HD</display-name></channel>
+	<display-name lang="zh">CCTV-8</display-name><display-name lang="zh">CCTV8综合</display-name><display-name lang="zh">CCTV-8综合</display-name><display-name lang="zh">CCTV8 综合</display-name><display-name lang="zh">CCTV-8 综合</display-name><display-name lang="zh">CCTV8高清</display-name><display-name lang="zh">CCTV-8高清</display-name><display-name lang="zh">CCTV8 高清</display-name><display-name lang="zh">CCTV-8 高清</display-name><display-name lang="zh">CCTV8HD</display-name><display-name lang="zh">CCTV-8HD</display-name><display-name lang="zh">CCTV8 HD</display-name><display-name lang="zh">CCTV-8 HD</display-name></channel>
 	<programme channel="CCTV8" start="20260830000300 +0800" stop="20260830004900 +0800">
 		<title lang="zh">隐身的名字第5集</title>
 	</programme>
@@ -18493,7 +18493,7 @@
 	</programme>
 	<channel id="CCTV9">
 		<display-name lang="zh">CCTV9</display-name>
-	<display-name lang="zh">CCTV-9</display-name><display-name lang="zh">CCTV9综合</display-name><display-name lang="zh">CCTV-9综合</display-name><display-name lang="zh">CCTV9高清</display-name><display-name lang="zh">CCTV-9高清</display-name><display-name lang="zh">CCTV9HD</display-name><display-name lang="zh">CCTV-9HD</display-name></channel>
+	<display-name lang="zh">CCTV-9</display-name><display-name lang="zh">CCTV9综合</display-name><display-name lang="zh">CCTV-9综合</display-name><display-name lang="zh">CCTV9 综合</display-name><display-name lang="zh">CCTV-9 综合</display-name><display-name lang="zh">CCTV9高清</display-name><display-name lang="zh">CCTV-9高清</display-name><display-name lang="zh">CCTV9 高清</display-name><display-name lang="zh">CCTV-9 高清</display-name><display-name lang="zh">CCTV9HD</display-name><display-name lang="zh">CCTV-9HD</display-name><display-name lang="zh">CCTV9 HD</display-name><display-name lang="zh">CCTV-9 HD</display-name></channel>
 	<programme channel="CCTV9" start="20260830003100 +0800" stop="20260830012700 +0800">
 		<title lang="zh">全景自然2026-241</title>
 	</programme>
