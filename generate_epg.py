@@ -9,15 +9,10 @@ import re
 # ---------- 配置 ----------
 EPG_URL = "https://proxy.lalifeier.eu.org/https://raw.githubusercontent.com/5iClub/CN.EPG/main/epg.xml"
 
-# 自定义映射（用于卫视频道或其他非央视频道）
-# 格式：'EPG中的标识' : '直播源中的名称'
+# 自定义映射（卫视频道等）
 CUSTOM_ALIAS_MAP = {
-    # 示例（请根据实际直播源取消注释并修改）：
     # "HUNAN": "湖南卫视",
     # "DRAGONTV": "东方卫视",
-    # "BTV1": "北京卫视",
-    # "ZJTV": "浙江卫视",
-    # "JSTV": "江苏卫视",
 }
 # -----------------------------------------------
 
@@ -31,20 +26,24 @@ def fetch_epg(url):
         sys.exit(1)
 
 def add_cctv_aliases(channel, num):
-    """
-    为央视频道添加所有常见别名变体
-    """
+    """为央视频道添加所有常见别名变体（含空格版本）"""
     existing = [elem.text for elem in channel.findall('display-name') if elem.text]
-    # 生成所有变体
+    # 生成所有变体（注意空格）
     variants = [
         f"CCTV{num}",
         f"CCTV-{num}",
         f"CCTV{num}综合",
         f"CCTV-{num}综合",
+        f"CCTV{num} 综合",      # 带空格
+        f"CCTV-{num} 综合",
         f"CCTV{num}高清",
         f"CCTV-{num}高清",
+        f"CCTV{num} 高清",
+        f"CCTV-{num} 高清",
         f"CCTV{num}HD",
         f"CCTV-{num}HD",
+        f"CCTV{num} HD",
+        f"CCTV-{num} HD",
     ]
     added = 0
     for alias in variants:
@@ -62,7 +61,7 @@ def add_aliases(root):
         existing_names = [elem.text for elem in channel.findall('display-name') if elem.text]
         cid = channel.get('id')
 
-        # 1. 自定义映射（非央视频道）
+        # 1. 自定义映射
         for key, alias in CUSTOM_ALIAS_MAP.items():
             if cid == key or key in existing_names:
                 if alias not in existing_names:
@@ -72,19 +71,20 @@ def add_aliases(root):
                     print(f"✓ 自定义映射: {key} -> {alias}")
                     existing_names.append(alias)
 
-        # 2. 自动为央视频道生成所有变体
-        # 检查 channel id 是否匹配 CCTV数字
-        if cid and re.match(r'^CCTV\d+$', cid, re.IGNORECASE):
+        # 2. 自动识别央视频道（兼容带横杠）
+        # 检查 channel id
+        if cid and re.match(r'^CCTV-?\d+$', cid, re.IGNORECASE):
             num = re.search(r'\d+', cid).group()
             add_cctv_aliases(channel, num)
-            continue  # 避免重复检查 display-name
+            continue
 
-        # 检查 display-name 是否包含 CCTV数字
+        # 检查 display-name
         found = False
         for display in channel.findall('display-name'):
             name = display.text
             if name:
-                m = re.match(r'^CCTV(\d+)', name, re.IGNORECASE)
+                # 允许 C…TV数字 或 C…TV-数字
+                m = re.match(r'^CCTV-?(\d+)', name, re.IGNORECASE)
                 if m:
                     num = m.group(1)
                     add_cctv_aliases(channel, num)
