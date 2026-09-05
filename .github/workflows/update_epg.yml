@@ -2,8 +2,7 @@ name: 每日更新EPG
 
 on:
   schedule:
-    # 北京时间 6:00 = UTC 22:00（前一天）
-    - cron: '0 22 * * *'
+    - cron: '0 22 * * *'   # 北京时间 6:00
   workflow_dispatch:
 
 jobs:
@@ -35,7 +34,7 @@ jobs:
       - name: 提交并推送
         run: |
           git config user.name "github-actions[bot]"
-          git config.user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "github-actions[bot]@users.noreply.github.com"   # ← 修正这里
           git add epg.xml
           git commit -m "自动更新EPG $(date '+%Y-%m-%d %H:%M:%S')"
           git push
