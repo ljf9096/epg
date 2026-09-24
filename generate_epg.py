@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-EPG 生成脚本 - 稳定版（OK影视向）
+EPG 生成脚本 - 央视/卫视全变体版（OK影视向）
 策略：
-  - 央视：只保留规范 channel id（CCTV-1）
-  - 所有变体（CCTV1 / CCTV1-综合 / CCTV-1综合 / CCTV综合）都放 display-name
-  - programme 只挂规范ID
-  - 卫视：只保留规范ID（HunanTV 等），变体放 display-name
+  1) 央视每个变体都建独立 channel（CCTV-1 / CCTV1 / CCTV1-综合 / CCTV-1综合 ...）
+  2) 每个 channel 都带完整 programme
+  3) 每个 channel 的 display-name 包含“同编号所有变体”
+  4) 卫视同理：湖南卫视 / 湖南 / HunanTV / 湖南卫视HD 都建 channel
 """
 
 import xml.etree.ElementTree as ET
@@ -18,8 +18,8 @@ import io
 import os
 import datetime
 import copy
-from collections import defaultdict
 
+# ---------- 配置 ----------
 EPG_SOURCES = [
     "https://live.fanmingming.cn/e.xml",
     "https://epg.112114.xyz/pp.xml",
@@ -30,6 +30,8 @@ EPG_SOURCES = [
     "https://gitee.com/taksssss/tv/raw/main/epg/erw.xml.gz",
     "https://gitee.com/taksssss/tv/raw/main/epg/epgpw_cn.xml.gz",
     "https://raw.githubusercontent.com/CCSH/IPTV/refs/heads/main/e.xml",
+    "https://raw.githubusercontent.com/litiande03/epg/refs/heads/master/pl.xml.gz",
+    "https://gitlab.com/Meroser/My-EPG/-/raw/main/tvxml-Meroser.xml.gz",
 ]
 
 PROVINCE_TV_MAP = {
@@ -49,7 +51,7 @@ PROVINCE_TV_MAP = {
     "河南卫视": "HenanTV", "河南": "HenanTV",
     "江西卫视": "JiangxiTV", "江西": "JiangxiTV",
     "重庆卫视": "ChongqingTV", "重庆": "ChongqingTV",
-    "东南卫视": "FujianTV", "福建": "FujianTV",
+    "东南卫视": "FujianTV", "福建": "FujianTV", "福建卫视": "FujianTV",
     "黑龙江卫视": "HeilongjiangTV", "黑龙江": "HeilongjiangTV",
     "河北卫视": "HebeiTV", "河北": "HebeiTV",
     "山西卫视": "ShanxiTV", "山西": "ShanxiTV",
@@ -65,6 +67,8 @@ PROVINCE_TV_MAP = {
     "青海卫视": "QinghaiTV", "青海": "QinghaiTV",
     "西藏卫视": "XizangTV", "西藏": "XizangTV",
     "海南卫视": "HainanTV", "海南": "HainanTV",
+    "兵团卫视": "BingtuanTV", "兵团": "BingtuanTV",
+    "延边卫视": "YanbianTV", "延边": "YanbianTV",
 }
 
 CCTV_NAME_MAP = {
@@ -76,60 +80,30 @@ CCTV_NAME_MAP = {
 }
 
 
-def fetch_epg(sources):
-    for url in sources:
+def fetch_epg_from_sources(sources):
+    for i, url in enumerate(sources, 1):
         try:
-            print("拉取:", url[:70])
+            print(f"  [{i}/{len(sources)}] 尝试: {url[:60]}...")
             r = requests.get(url, timeout=15)
             r.raise_for_status()
             c = r.content
-            if url.endswith(".gz") or c[:2] == b"\x1f\x8b":
-                c = gzip.GzipFile(fileobj=io.BytesIO(c)).read()
-            return c.decode("utf-8")
+            if url.endswith('.gz') or c[:2] == b'\x1f\x8b':
+                with gzip.GzipFile(fileobj=io.BytesIO(c)) as gz:
+                    return gz.read().decode('utf-8')
+            return c.decode('utf-8')
         except Exception as e:
-            print("失败:", e)
-    sys.exit("EPG 源全部失败")
+            print(f"  ✗ {e}")
+    sys.exit("所有EPG源失败")
 
 
-def norm_cctv(text):
+def get_cctv_number(text):
     if not text:
         return None
-    s = text.strip().upper()
-    s = re.sub(r"\s+", "", s)
-    s = re.sub(r"[\(\[【].*?[\)\]】]", "", s)
-    if ("央视" in s or "中央" in s) and ("综合" in s or "一套" in s):
-        return "CCTV-1"
-    m = re.search(r"CCTV-?0*(\d{1,2}|\d+\+?|4K|8K)", s)
-    if not m:
-        return None
-    num = m.group(1)
-    if num.isdigit():
-        num = str(int(num))
-    return f"CCTV-{num}"
+    m = re.search(r'CCTV[-\s]?(\d+\+?|4K|8K)', text, re.IGNORECASE)
+    return m.group(1).upper() if m else None
 
 
-def cctv_aliases(num):
-    name = CCTV_NAME_MAP.get(num, "")
-    pres = ["CCTV", "CCTV-", "cctv", "cctv-"]
-    sufs = ["", "综合", "高清", "HD", "超高清", name]
-    out = set()
-    for p in pres:
-        for s in sufs:
-            out.add(f"{p}{num}{s}")
-            if s:
-                out.add(f"{p}{num}-{s}")   # CCTV1-综合 / CCTV-1-综合
-                out.add(f"{p}{num} {s}")
-    if num == "1":
-        out.update(["CCTV综合", "CCTV-综合", "央视综合", "中央一台", "中央电视台综合频道"])
-    if num == "5+":
-        out.update(["CCTV5+", "CCTV-5+", "CCTV5加", "CCTV体育赛事"])
-    if num in ("4K", "8K"):
-        out.update([f"CCTV{num}", f"CCTV-{num}", f"CCTV{num}超高清"])
-    out.discard("")
-    return out
-
-
-def province_canon(name):
+def get_province_canon(name):
     if not name:
         return None
     if name in PROVINCE_TV_MAP:
@@ -140,155 +114,232 @@ def province_canon(name):
     return None
 
 
-def process_cctv(root):
-    prog_map = defaultdict(list)
-    for p in root.findall("programme"):
-        prog_map[p.get("channel")].append(p)
+def gen_all_cctv_aliases(num):
+    """
+    关键：三段组合
+    前缀 × 编号 × 后缀
+    后缀包含：
+      "" 综合 高清 HD 超高清 中文名
+      -综合 -高清 -HD 综合 高清 HD
+      " 综合" " 高清"
+    """
+    aliases = set()
+    name = CCTV_NAME_MAP.get(num, "")
 
-    # 按规范ID归组
-    groups = defaultdict(lambda: {"ids": set(), "progs": []})
-    for ch in root.findall("channel"):
-        cid = ch.get("id")
-        dns = [d.text for d in ch.findall("display-name") if d.text]
-        canon = norm_cctv(cid)
-        if not canon:
-            canon = next((norm_cctv(d) for d in dns), None)
-        if not canon:
+    prefixes = ["CCTV", "CCTV-", "cctv", "cctv-"]
+
+    base_suffixes = ["", "综合", "高清", "HD", "超高清"]
+    if name:
+        base_suffixes.append(name)
+
+    composed = set(base_suffixes)
+    for s in base_suffixes:
+        if s:
+            composed.add(f"-{s}")   # CCTV1-综合 / CCTV1-HD
+            composed.add(f" {s}")   # CCTV1 综合 / CCTV1 HD
+    # 再补“先横线后中文”已经被上面 -综合 覆盖
+    # 显式补一些常见野鸡写法
+    composed.update([
+        "综合高清", "-综合高清", "综合HD", "-综合HD",
+        "高清综合", "-高清综合",
+    ])
+
+    for p in prefixes:
+        for s in composed:
+            aliases.add(f"{p}{num}{s}")
+
+    # 5+
+    if num == "5+":
+        for p in prefixes:
+            for s in ["", "体育", "体育赛事", "高清", "HD", "-体育", "-体育赛事", "-高清", "-HD"]:
+                aliases.add(f"{p}5+{s}")
+
+    # 4K / 8K
+    if num in ("4K", "8K"):
+        for p in prefixes:
+            for s in ["", "超高清", "高清", "HD", "-超高清", "-高清", "-HD"]:
+                aliases.add(f"{p}{num}{s}")
+
+    # CCTV-1 专属：没有编号只有综合
+    if num == "1":
+        aliases.update([
+            "CCTV综合", "CCTV-综合", "CCTV 综合",
+            "cctv综合", "cctv-综合",
+            "CCTV综合高清", "CCTV-综合高清",
+            "中央电视台综合频道", "央视综合", "央视综合频道",
+        ])
+
+    aliases.discard("")
+    return aliases
+
+
+def gen_province_aliases(canon_id, seed_names):
+    a = {canon_id}
+    for n in seed_names:
+        a.add(n)
+        if "卫视" in n:
+            base = n.replace("卫视", "")
+            a.update([base, f"{base}卫视HD", f"{base}卫视高清", f"{base}TV", f"{base}-TV"])
+    return a
+
+
+def _rebuild_channel(existing, new_channels, alias, all_aliases, canon_progs):
+    ch = existing.get(alias)
+    if ch is None:
+        ch = ET.Element('channel')
+        ch.set('id', alias)
+        new_channels.append(ch)
+        existing[alias] = ch
+    else:
+        for d in ch.findall('display-name'):
+            ch.remove(d)
+
+    dn = ET.SubElement(ch, 'display-name')
+    dn.text = alias
+    dn.set('lang', 'zh')
+
+    for s in sorted(all_aliases):
+        if s == alias:
             continue
-        groups[canon]["ids"].add(cid)
-        groups[canon]["ids"].update(dns)
-        groups[canon]["progs"] += prog_map.get(cid, [])
+        d = ET.SubElement(ch, 'display-name')
+        d.text = s
+        d.set('lang', 'zh')
 
-    # 删旧节目
-    all_old = set()
-    for g in groups.values():
-        all_old.update(g["ids"])
-    for p in list(root.findall("programme")):
-        if p.get("channel") in all_old:
+    for prog in canon_progs:
+        np = copy.deepcopy(prog)
+        np.set('channel', alias)
+        yield np
+
+
+def process_cctv(root):
+    prog_map = {}
+    for p in root.findall('programme'):
+        prog_map.setdefault(p.get('channel'), []).append(p)
+
+    groups = {}
+    for ch in root.findall('channel'):
+        cid = ch.get('id')
+        if not cid:
+            continue
+        dns = [e.text for e in ch.findall('display-name') if e.text]
+        num = get_cctv_number(cid)
+        if not num:
+            num = next((get_cctv_number(d) for d in dns), None)
+        if not num:
+            continue
+        groups.setdefault(num, []).append({
+            'id': cid,
+            'progs': prog_map.get(cid, []),
+        })
+
+    if not groups:
+        print("· 无央视")
+        return
+
+    all_ids = set()
+    for num, items in groups.items():
+        all_ids |= gen_all_cctv_aliases(num)
+        for it in items:
+            all_ids.add(it['id'])
+
+    for p in list(root.findall('programme')):
+        if p.get('channel') in all_ids:
             root.remove(p)
 
-    existing = {c.get("id"): c for c in root.findall("channel")}
-    new_chs = []
+    existing = {c.get('id'): c for c in root.findall('channel')}
+    new_channels = []
     new_progs = []
 
-    for canon, g in groups.items():
-        num = canon.split("-")[1]
-        aliases = cctv_aliases(num) | g["ids"]
-        # 节目源：最多节目的原频道
-        progs = g["progs"]
+    for num, items in sorted(groups.items()):
+        canon_progs = max((it['progs'] for it in items), key=len) if items else []
+        aliases = gen_all_cctv_aliases(num)
+        for it in items:
+            aliases.add(it['id'])
 
-        ch = existing.get(canon)
-        if ch is None:
-            ch = ET.Element("channel", {"id": canon})
-            new_chs.append(ch)
-            existing[canon] = ch
-        else:
-            for d in ch.findall("display-name"):
-                ch.remove(d)
+        for alias in sorted(aliases):
+            for np in _rebuild_channel(existing, new_channels, alias, aliases, canon_progs):
+                new_progs.append(np)
 
-        dn = ET.SubElement(ch, "display-name")
-        dn.text = canon
-        dn.set("lang", "zh")
-        for a in sorted(aliases):
-            if a == canon:
-                continue
-            d = ET.SubElement(ch, "display-name")
-            d.text = a
-            d.set("lang", "zh")
-
-        for p in progs:
-            np = copy.deepcopy(p)
-            np.set("channel", canon)
-            new_progs.append(np)
-
-    _insert(root, new_chs, new_progs)
-    print("央视处理完：", len(new_chs), "个规范频道")
+    _insert(root, new_channels, new_progs)
+    print(f"✓ 央视：新增频道 {len(new_channels)}，节目 {len(new_progs)}")
 
 
 def process_province(root):
-    prog_map = defaultdict(list)
-    for p in root.findall("programme"):
-        prog_map[p.get("channel")].append(p)
+    prog_map = {}
+    for p in root.findall('programme'):
+        prog_map.setdefault(p.get('channel'), []).append(p)
 
-    groups = defaultdict(lambda: {"ids": set(), "progs": []})
-    for ch in root.findall("channel"):
-        cid = ch.get("id")
-        dns = [d.text for d in ch.findall("display-name") if d.text]
-        canon = province_canon(cid) or next((province_canon(d) for d in dns), None)
+    groups = {}
+    for ch in root.findall('channel'):
+        cid = ch.get('id')
+        if not cid:
+            continue
+        dns = [e.text for e in ch.findall('display-name') if e.text]
+        canon = get_province_canon(cid) or next((get_province_canon(d) for d in dns), None)
         if not canon:
             continue
-        groups[canon]["ids"].add(cid)
-        groups[canon]["ids"].update(dns)
-        groups[canon]["progs"] += prog_map.get(cid, [])
+        g = groups.setdefault(canon, {'seeds': set(), 'progs': []})
+        g['seeds'].add(cid)
+        g['seeds'].update(dns)
+        g['progs'].extend(prog_map.get(cid, []))
 
-    old = set()
+    if not groups:
+        print("· 无卫视")
+        return
+
+    old_ids = set()
     for g in groups.values():
-        old.update(g["ids"])
-    for p in list(root.findall("programme")):
-        if p.get("channel") in old:
+        old_ids.update(g['seeds'])
+
+    for p in list(root.findall('programme')):
+        if p.get('channel') in old_ids:
             root.remove(p)
-    for ch in list(root.findall("channel")):
-        if ch.get("id") in old and ch.get("id") not in groups:
+
+    for ch in list(root.findall('channel')):
+        if ch.get('id') in old_ids and ch.get('id') not in groups:
             root.remove(ch)
 
-    existing = {c.get("id"): c for c in root.findall("channel")}
-    new_chs = []
+    existing = {c.get('id'): c for c in root.findall('channel')}
+    new_channels = []
     new_progs = []
 
-    for canon, g in groups.items():
-        ch = existing.get(canon)
-        if ch is None:
-            ch = ET.Element("channel", {"id": canon})
-            new_chs.append(ch)
-            existing[canon] = ch
-        else:
-            for d in ch.findall("display-name"):
-                ch.remove(d)
+    for canon, g in sorted(groups.items()):
+        aliases = gen_province_aliases(canon, g['seeds'])
+        for alias in sorted(aliases):
+            for np in _rebuild_channel(existing, new_channels, alias, aliases, g['progs']):
+                new_progs.append(np)
 
-        dn = ET.SubElement(ch, "display-name")
-        dn.text = canon
-        dn.set("lang", "zh")
-        for a in sorted(g["ids"]):
-            if a == canon:
-                continue
-            d = ET.SubElement(ch, "display-name")
-            d.text = a
-            d.set("lang", "zh")
-
-        for p in g["progs"]:
-            np = copy.deepcopy(p)
-            np.set("channel", canon)
-            new_progs.append(np)
-
-    _insert(root, new_chs, new_progs)
-    print("卫视处理完：", len(new_chs), "个规范频道")
+    _insert(root, new_channels, new_progs)
+    print(f"✓ 卫视：新增频道 {len(new_channels)}，节目 {len(new_progs)}")
 
 
-def _insert(root, new_chs, new_progs):
-    if new_chs:
+def _insert(root, new_channels, new_progs):
+    if new_channels:
         idx = len(root)
         for i, child in enumerate(root):
-            if child.tag == "programme":
+            if child.tag == 'programme':
                 idx = i
                 break
-        for off, ch in enumerate(new_chs):
+        for off, ch in enumerate(new_channels):
             root.insert(idx + off, ch)
     root.extend(new_progs)
 
 
 def main():
     out = sys.argv[1] if len(sys.argv) > 1 else "epg.xml"
-    root = ET.fromstring(fetch_epg(EPG_SOURCES))
+    print("📡 获取EPG...")
+    xml_text = fetch_epg_from_sources(EPG_SOURCES)
+    root = ET.fromstring(xml_text)
 
-    print("原始频道:", len(root.findall("channel")),
-          "节目:", len(root.findall("programme")))
+    print("📺 原始:", len(root.findall('channel')), "频道 /",
+          len(root.findall('programme')), "节目")
 
     process_cctv(root)
     process_province(root)
 
-    root.set("generated", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    ET.ElementTree(root).write(out, encoding="utf-8", xml_declaration=True)
-    print(f"生成 {out}：频道 {len(root.findall('channel'))} / 节目 {len(root.findall('programme'))}")
+    root.set('generated', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    ET.ElementTree(root).write(out, encoding='utf-8', xml_declaration=True)
+    print(f"✅ {out} | 频道 {len(root.findall('channel') )} / 节目 {len(root.findall('programme'))}")
 
 
 if __name__ == "__main__":
