@@ -145,7 +145,6 @@ def process_cctv(root):
     for p in root.findall("programme"):
         prog_map[p.get("channel")].append(p)
 
-    # 按规范ID归组
     groups = defaultdict(lambda: {"ids": set(), "progs": []})
     for ch in root.findall("channel"):
         cid = ch.get("id")
@@ -159,7 +158,6 @@ def process_cctv(root):
         groups[canon]["ids"].update(dns)
         groups[canon]["progs"] += prog_map.get(cid, [])
 
-    # 删旧节目
     all_old = set()
     for g in groups.values():
         all_old.update(g["ids"])
@@ -174,7 +172,6 @@ def process_cctv(root):
     for canon, g in groups.items():
         num = canon.split("-")[1]
         aliases = cctv_aliases(num) | g["ids"]
-        # 节目源：最多节目的原频道
         progs = g["progs"]
 
         ch = existing.get(canon)
