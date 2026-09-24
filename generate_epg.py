@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+EPG 生成脚本 - 修复 OK影视 匹配问题
+策略：
+  1) 为每个 CCTV 编号挑选规范源，生成完整的节目数据
+  2) 把所有可能出现的变体（CCTV1 / CCTV-1 / CCTV1综合 / CCTV1-综合 / ...）
+     作为独立的 <channel> 创建，每个都带完整节目
+  3) 同时把这些变体也作为 display-name 附加到每个频道上
+     → 无论 OK影视 是按 id 匹配还是按 display-name 匹配，都能命中
+  4) 每个 <channel> 的第一个 display-name 严格等于它的 id
+"""
 
 import xml.etree.ElementTree as ET
 import requests
@@ -54,14 +64,14 @@ def fetch_epg_from_sources(sources):
                 try:
                     with gzip.GzipFile(fileobj=io.BytesIO(content)) as gz:
                         xml_content = gz.read().decode('utf-8')
-                    print(f"  ✓ 成功获取 (gzip压缩格式)")
+                    print(f"  ✓ 成功获取 (gzip)")
                     return xml_content
                 except Exception as e:
                     print(f"  ✗ gzip解压失败: {e}")
                     continue
 
             xml_content = content.decode('utf-8')
-            print(f"  ✓ 成功获取 (XML格式)")
+            print(f"  ✓ 成功获取 (XML)")
             return xml_content
         except Exception as e:
             print(f"  ✗ 失败: {e}")
@@ -71,108 +81,125 @@ def fetch_epg_from_sources(sources):
     sys.exit(1)
 
 
-def get_cctv_number(channel_id, display_names):
-    """从频道 id 或 display-name 中提取央视编号。"""
-    candidates = [channel_id] + list(display_names)
-    for text in candidates:
-        if not text:
-            continue
-        m = re.search(r'CCTV[-\s]?(\d+\+?|[48]K|\d+)', text, re.IGNORECASE)
-        if m:
-            return m.group(1).upper()
-    return None
+def get_cctv_number(text):
+    """从任意字符串里提取央视编号，如 '1'、'5+'、'4K'。"""
+    if not text:
+        return None
+    m = re.search(r'CCTV[-\s]?(\d+\+?|[48]K|\d+)', text, re.IGNORECASE)
+    return m.group(1).upper() if m else None
 
 
-def get_cctv_aliases(num):
+def gen_all_aliases(num):
     """
-    为给定的央视编号生成所有可能的 id 别名。
-    覆盖：CCTV1、CCTV-1、CCTV1综合、CCTV-1综合、CCTV1-综合、CCTV-1-综合、
-          CCTV1高清、CCTV-1高清、CCTV1HD、CCTV-1HD、CCTV1 综合、CCTV-1 综合 等。
+    为给定央视编号生成所有可能出现的字符串变体。
+    举例 num='1'，会返回：
+      CCTV1, CCTV-1, cctv1, cctv-1,
+      CCTV1综合, CCTV-1综合, CCTV1-综合, CCTV-1-综合,
+      CCTV1 综合, CCTV-1 综合,
+      CCTV1高清, CCTV-1高清, CCTV1-高清, ...
+      CCTV1HD, CCTV-1HD, CCTV1-HD, ...
+      CCTV1综合高清, CCTV-1综合高清, ...
+      CCTV1超高清, CCTV-1超高清, ...
     """
     aliases = set()
+    name = CCTV_NAME_MAP.get(num, "")
 
-    # 基础形式
-    for p in ["CCTV", "cctv"]:
-        aliases.add(f"{p}{num}")
-        aliases.add(f"{p}-{num}")
+    # 前缀（带/不带横线，大小写）
+    prefixes = ["CCTV", "CCTV-", "cctv", "cctv-"]
 
-    if num.isdigit():
-        name = CCTV_NAME_MAP.get(num, "")
-        suffixes = []
-        if name:
-            suffixes.append(name)
-        suffixes += ["综合", "高清", "HD"]
+    # 后缀集合
+    suffixes = ["", "综合", "高清", "HD", "超高清"]
+    if name:
+        suffixes.append(name)
 
-        for p in ["CCTV", "cctv"]:
-            for s in suffixes:
-                aliases.add(f"{p}{num}{s}")
-                aliases.add(f"{p}-{num}{s}")
-                aliases.add(f"{p}{num}-{s}")
-                aliases.add(f"{p}-{num}-{s}")
-                aliases.add(f"{p}{num} {s}")
-                aliases.add(f"{p}-{num} {s}")
+    # 加上 "-后缀" 和 " 后缀" 的形式
+    extra = []
+    for s in suffixes:
+        if s:
+            extra.append(f"-{s}")
+            extra.append(f" {s}")
+    all_suffixes = suffixes + extra
 
-        # 综合高清组合
-        for p in ["CCTV", "cctv"]:
-            aliases.add(f"{p}{num}综合高清")
-            aliases.add(f"{p}-{num}综合高清")
+    # 组合：前缀 + 编号 + 后缀
+    for p in prefixes:
+        for s in all_suffixes:
+            aliases.add(f"{p}{num}{s}")
 
-    elif num == "5+":
-        for p in ["CCTV", "cctv"]:
-            for s in ["", "体育", "体育赛事", "高清", "HD"]:
+    # 5+ 特殊情况
+    if num == "5+":
+        for p in prefixes:
+            for s in ["", "体育", "体育赛事", "高清", "HD",
+                      "-体育", "-体育赛事", "-高清", "-HD",
+                      " 体育", " 体育赛事", " 高清", " HD"]:
                 aliases.add(f"{p}5+{s}")
-                aliases.add(f"{p}-5+{s}")
 
-    elif num in ("4K", "8K"):
-        for p in ["CCTV", "cctv"]:
-            for s in ["", "超高清", "高清", "HD"]:
+    # 4K/8K 特殊情况
+    if num in ("4K", "8K"):
+        for p in prefixes:
+            for s in ["", "超高清", "高清", "HD",
+                      "-超高清", "-高清", "-HD",
+                      " 超高清", " 高清", " HD"]:
                 aliases.add(f"{p}{num}{s}")
-                aliases.add(f"{p}-{num}{s}")
 
+    aliases.discard("")
     return aliases
 
 
 def process_cctv(root):
-    """处理所有央视频道：为每个编号生成完整的别名频道集合，并统一节目。"""
-    # 1. 构建 id -> 节目列表 的映射
+    """
+    处理所有央视频道：
+      1) 按编号分组，选出规范节目源
+      2) 为该编号下所有变体（id 别名）创建/更新 <channel>，各带完整节目
+      3) 在每个频道上把该编号的所有变体都作为 display-name 附加上去
+    """
+    # 索引现有节目
     prog_map = {}
     for prog in root.findall('programme'):
         cid = prog.get('channel')
         if cid:
             prog_map.setdefault(cid, []).append(prog)
 
-    # 2. 按央视编号分组
+    # 按 CCTV 编号分组
     groups = {}
     for ch in root.findall('channel'):
         cid = ch.get('id')
         if not cid:
             continue
         dns = [e.text for e in ch.findall('display-name') if e.text]
-        num = get_cctv_number(cid, dns)
-        if num:
-            groups.setdefault(num, []).append({
-                'ch': ch, 'id': cid, 'dns': dns,
-                'progs': prog_map.get(cid, []),
-            })
+        num = get_cctv_number(cid)
+        if not num:
+            for dn in dns:
+                num = get_cctv_number(dn)
+                if num:
+                    break
+        if not num:
+            continue
+        groups.setdefault(num, []).append({
+            'ch': ch,
+            'id': cid,
+            'dns': dns,
+            'progs': prog_map.get(cid, []),
+        })
 
     if not groups:
         print("  · 未发现央视频道")
         return
 
-    # 3. 收集所有央视相关 id，删除它们的旧节目
-    cctv_ids = set()
-    for num, items in groups.items():
-        cctv_ids |= get_cctv_aliases(num)
-        for item in items:
-            cctv_ids.add(item['id'])
+    # 收集所有 CCTV 相关的 id（用于删掉旧节目）
+    all_cctv_ids = set()
+    for num in groups:
+        all_cctv_ids |= gen_all_aliases(num)
+        for item in groups[num]:
+            all_cctv_ids.add(item['id'])
 
+    # 删除所有 CCTV id 的旧节目
     removed = 0
     for prog in list(root.findall('programme')):
-        if prog.get('channel') in cctv_ids:
+        if prog.get('channel') in all_cctv_ids:
             root.remove(prog)
             removed += 1
 
-    # 4. 现有频道索引
+    # 现有频道索引
     existing = {}
     for ch in root.findall('channel'):
         cid = ch.get('id')
@@ -182,48 +209,57 @@ def process_cctv(root):
     new_channels = []
     new_progs = []
 
-    # 5. 为每个央视编号构建完整的别名频道集合
+    # --------- 逐个央视编号处理 ---------
     for num, items in sorted(groups.items()):
-        # 选取该组中节目最多的作为规范源
-        canon_progs = max((it['progs'] for it in items), key=len)
+        # 规范节目源 = 节目最多的那个
+        canon_progs = max((it['progs'] for it in items), key=len) if items else []
 
-        # 所有别名 id
-        aliases = get_cctv_aliases(num)
+        # 该编号下所有可能的字符串（id 别名）
+        aliases = gen_all_aliases(num)
         for item in items:
             aliases.add(item['id'])
         aliases.discard('')
 
+        # 保证有一个"主 id"排在最前面（最短的）
+        main_id = sorted(aliases, key=lambda s: (len(s), s))[0]
+
         for alias in sorted(aliases):
-            if alias not in existing:
-                # 新建频道：只放 id 作为 display-name（放在第一位）
+            ch = existing.get(alias)
+            if ch is None:
+                # 新频道
                 ch = ET.Element('channel')
                 ch.set('id', alias)
-                dn = ET.SubElement(ch, 'display-name')
-                dn.text = alias
-                dn.set('lang', 'zh')
+                # 第一个 display-name = id
+                first_dn = ET.SubElement(ch, 'display-name')
+                first_dn.text = alias
+                first_dn.set('lang', 'zh')
+                # 附加其它变体作为 display-name
+                for s in sorted(aliases):
+                    if s != alias:
+                        dn = ET.SubElement(ch, 'display-name')
+                        dn.text = s
+                        dn.set('lang', 'zh')
                 new_channels.append(ch)
                 existing[alias] = ch
             else:
-                # 已有频道：确保第一个 display-name == id
-                ch = existing[alias]
+                # 已有频道：确保第一个 display-name = id
                 dns = ch.findall('display-name')
                 if not dns or (dns[0].text or "") != alias:
-                    # 移除已有的同名 display-name 避免重复
-                    for dn in dns[:]:
-                        if (dn.text or "") == alias:
-                            ch.remove(dn)
+                    for d in dns[:]:
+                        if (d.text or "") == alias:
+                            ch.remove(d)
                     new_dn = ET.Element('display-name')
                     new_dn.text = alias
                     new_dn.set('lang', 'zh')
                     ch.insert(0, new_dn)
 
-            # 复制规范源的节目
+            # 复制规范节目到该别名
             for prog in canon_progs:
                 np = copy.deepcopy(prog)
                 np.set('channel', alias)
                 new_progs.append(np)
 
-    # 6. 把新频道插入到第一个 programme 之前
+    # --------- 把新 channel 插到第一个 programme 之前 ---------
     if new_channels:
         idx = len(root)
         for i, child in enumerate(root):
@@ -236,10 +272,27 @@ def process_cctv(root):
     # 追加节目
     root.extend(new_progs)
 
-    print(f"  ✓ 央视处理: {len(groups)} 个编号组, "
-          f"新增 {len(new_channels)} 个频道, "
-          f"删除旧节目 {removed} 条, "
-          f"写入 {len(new_progs)} 条节目")
+    print(f"  ✓ 央视处理完成")
+    print(f"     · 编号组: {len(groups)}")
+    print(f"     · 新增频道: {len(new_channels)}")
+    print(f"     · 删除旧节目: {removed}")
+    print(f"     · 写入新节目: {len(new_progs)}")
+
+
+def dump_aliases_for_debug(root, num="1"):
+    """调试用：输出某个 CCTV 编号下所有已注册的 id 和 display-name。"""
+    print(f"\n  --- 调试: CCTV{num} 相关频道 ---")
+    for ch in root.findall('channel'):
+        cid = ch.get('id') or ''
+        if not re.search(rf'CCTV[-\s]?{re.escape(num)}\b', cid, re.IGNORECASE):
+            # 也检查 display-name
+            dns = [e.text or '' for e in ch.findall('display-name')]
+            if not any(re.search(rf'CCTV[-\s]?{re.escape(num)}\b', d, re.IGNORECASE) for d in dns):
+                continue
+        dns = [e.text or '' for e in ch.findall('display-name')]
+        print(f"    id={cid!r}")
+        print(f"       display-names={dns}")
+    print(f"  --- 调试结束 ---\n")
 
 
 def main():
@@ -254,8 +307,9 @@ def main():
         sys.exit(1)
 
     print(f"📺 原始频道数: {len(root.findall('channel'))}")
+    print(f"📺 原始节目数: {len(root.findall('programme'))}")
 
-    # 处理央视
+    # 核心处理
     process_cctv(root)
 
     # 自定义映射
@@ -271,6 +325,10 @@ def main():
                     print(f"✓ 自定义映射: {key} -> {alias}")
                     existing_names.append(alias)
 
+    # 调试输出 CCTV1 的所有别名
+    dump_aliases_for_debug(root, "1")
+    dump_aliases_for_debug(root, "5")
+
     # 时间戳
     root.set('generated', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
@@ -281,6 +339,8 @@ def main():
             size = os.path.getsize(output_file)
             print(f"✅ 已生成: {output_file} (大小: {size} 字节)")
             print(f"   绝对路径: {os.path.abspath(output_file)}")
+            print(f"   总频道数: {len(root.findall('channel'))}")
+            print(f"   总节目数: {len(root.findall('programme'))}")
         else:
             print(f"❌ 写入失败，文件不存在")
             sys.exit(1)
